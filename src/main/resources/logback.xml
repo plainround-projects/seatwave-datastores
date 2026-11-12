@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Lettuce and Netty log through SLF4J. Without a backend SLF4J prints three lines about a
+     missing binder on every run, and without this file Logback prints every DEBUG line, which
+     buries the programs' own output. Warnings and errors still go to standard error. -->
+<configuration>
+  <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+    <target>System.err</target>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+  <!-- On macOS Netty warns that its native DNS resolver is missing. The lab connects to
+       127.0.0.1 by address, so no name is resolved and the warning describes nothing that runs. -->
+  <logger name="io.netty.resolver.dns.DnsServerAddressStreamProviders" level="ERROR"/>
+  <root level="WARN">
+    <appender-ref ref="STDERR"/>
+  </root>
+</configuration>
